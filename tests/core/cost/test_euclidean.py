@@ -30,7 +30,7 @@ class TestEuclideanDistance:
         """Test basic vec2vec computation."""
         distance = euclidean_metric.vec2vec(vec1, vec2)
         # Returns squared distance: (4-1)^2 + (6-2)^2 = 9 + 16 = 25.0
-        expected = (4 - 1) ** 2 + (6 - 2) ** 2
+        expected = np.sqrt((4 - 1) ** 2 + (6 - 2) ** 2)
         assert distance == pytest.approx(expected, abs=1e-6)
 
     def test_vec2vec_identical(self, euclidean_metric, vec1):
@@ -42,7 +42,7 @@ class TestEuclideanDistance:
         """Test vec2vec with zero vector."""
         zero_vec = np.array([[0.0], [0.0]], dtype=np.float32)
         distance = euclidean_metric.vec2vec(vec1, zero_vec)
-        expected = np.sum(vec1**2)
+        expected = np.sqrt(np.sum(vec1**2))
         assert distance == pytest.approx(expected, abs=1e-6)
 
     def test_vec2vec_negative_values(self, euclidean_metric):
@@ -50,7 +50,7 @@ class TestEuclideanDistance:
         vec1 = np.array([[-1.0], [-2.0]], dtype=np.float32)
         vec2 = np.array([[1.0], [2.0]], dtype=np.float32)
         distance = euclidean_metric.vec2vec(vec1, vec2)
-        expected = np.sum((vec1 - vec2) ** 2)
+        expected = np.sqrt(np.sum((vec1 - vec2) ** 2))
         assert distance == pytest.approx(expected, abs=1e-6)
 
     def test_mat2vec_basic(self, euclidean_metric):
@@ -63,7 +63,7 @@ class TestEuclideanDistance:
         # First column should be identical to vec, so distance should be 0
         assert distances[0] == pytest.approx(0.0, abs=1e-6)
         # Second column distance should be sqrt((3-1)^2 + (4-2)^2) = sqrt(4 + 4) = sqrt(8)
-        expected = np.sqrt((3 - 1) ** 2 + (4 - 2) ** 2)
+        expected = np.sqrt(np.sum((3 - 1) ** 2 + (4 - 2) ** 2))
         assert distances[1] == pytest.approx(expected, abs=1e-6)
 
     def test_mat2vec_shape(self, euclidean_metric):

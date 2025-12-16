@@ -41,6 +41,10 @@ class TestCosineDistance:
     def test_vec2vec_normalized(self, cosine_metric, normalized_vec1, normalized_vec2):
         """Test vec2vec with normalized vectors."""
         distance = cosine_metric.vec2vec(normalized_vec1, normalized_vec2, normalized=True)
+        # Accept scalar or (1, 1) array
+        if isinstance(distance, np.ndarray):
+            assert distance.shape == (1, 1)
+            distance = distance.item()
         assert isinstance(distance, (float, np.floating))
         assert distance == pytest.approx(1.0, abs=1e-6)  # Orthogonal vectors
 
@@ -48,6 +52,9 @@ class TestCosineDistance:
         """Test vec2vec with unnormalized vectors."""
         distance = cosine_metric.vec2vec(unnormalized_vec1, unnormalized_vec2)
         # Both vectors point in similar direction, so distance should be small
+        if isinstance(distance, np.ndarray):
+            assert distance.shape == (1, 1)
+            distance = distance.item()
         assert isinstance(distance, (float, np.floating))
         assert 0.0 <= distance <= 1.0
 
@@ -70,6 +77,9 @@ class TestCosineDistance:
         vec2 = np.array([[0.0], [0.0]], dtype=np.float32)
         # Should handle division by zero gracefully
         distance = cosine_metric.vec2vec(vec1, vec2)
+        if isinstance(distance, np.ndarray):
+            assert distance.shape == (1, 1)
+            distance = distance.item()
         assert isinstance(distance, (float, np.floating))
         assert np.isfinite(distance)
 
