@@ -23,7 +23,6 @@ from .core.cost import (
     CosineDistance,
     EuclideanDistance,
     get_cost_metric,
-    handle_cost,  # Backward compatibility
 )
 
 # Feature extraction
@@ -31,13 +30,6 @@ from .core.features import (
     FeatureExtractor,
     OnlineFeatureExtractor,
     OfflineFeatureExtractor,
-)
-
-# Time scale modification
-from .core.timescale import (
-    TimeScaleModifier,
-    OnlineTimeScaleModifier,
-    OfflineTimeScaleModifier,
 )
 
 __version__ = "0.1.0"
@@ -55,13 +47,8 @@ __all__ = [
     "CosineDistance",
     "EuclideanDistance",
     "get_cost_metric",
-    "handle_cost",  # Backward compatibility
     # Features
     "FeatureExtractor",
     "OnlineFeatureExtractor",
     "OfflineFeatureExtractor",
-    # Time scale modification
-    "TimeScaleModifier",
-    "OnlineTimeScaleModifier",
-    "OfflineTimeScaleModifier",
 ]
