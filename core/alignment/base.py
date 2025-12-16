@@ -1,6 +1,7 @@
 """Base class for alignment algorithms."""
 
 # standard imports
+from abc import ABC, abstractmethod
 from typing import Callable
 
 # library imports
@@ -10,7 +11,7 @@ import numpy as np
 from core.cost import CostMetric, get_cost_metric
 
 
-class AlignmentBase:
+class AlignmentBase(ABC):
     """Base class for alignment algorithms of two signals.
 
     This class provides the common interface for both online and offline
@@ -41,6 +42,7 @@ class AlignmentBase:
         # set up alignment costs
         self.cost_metric = get_cost_metric(cost_metric)
 
+    @abstractmethod
     def align(self, query_features: np.ndarray):
         """Align query features to reference features.
 
@@ -49,11 +51,8 @@ class AlignmentBase:
 
         Returns:
             Alignment path or result (implementation-specific).
-
-        Raises:
-            NotImplementedError: Must be implemented by subclasses.
         """
-        raise NotImplementedError
+        pass
 
 
 class OnlineAlignment(AlignmentBase):
@@ -63,28 +62,25 @@ class OnlineAlignment(AlignmentBase):
     making them suitable for streaming or real-time applications.
     """
 
+    @abstractmethod
     def feed(self, query_frame: np.ndarray):
         """Feed a single query frame into the alignment system.
 
         Args:
             query_frame: Single frame of query features. Shape (n_features, 1)
-
-        Raises:
-            NotImplementedError: Must be implemented by subclasses.
         """
-        raise NotImplementedError
+        pass
 
+    @abstractmethod
     def process_frame(self):
         """Process the most recently fed query frame.
 
         This method should update the internal alignment state based on the
         last frame fed via feed().
-
-        Raises:
-            NotImplementedError: Must be implemented by subclasses.
         """
-        raise NotImplementedError
+        pass
 
+    @abstractmethod
     def align(self, query_features: np.ndarray):
         """Simulate online process with complete query features.
 
@@ -97,8 +93,5 @@ class OnlineAlignment(AlignmentBase):
 
         Returns:
             Alignment path or result (implementation-specific).
-
-        Raises:
-            NotImplementedError: Must be implemented by subclasses.
         """
-        raise NotImplementedError
+        pass
