@@ -7,8 +7,7 @@ from typing import Any, Callable
 import numpy as np
 
 # custom imports
-from core.cost import CostMetric
-from utils.backend import handle_cost
+from core.cost import CostMetric, get_cost_metric
 
 
 class OnlineAlignment:
@@ -22,13 +21,14 @@ class OnlineAlignment:
         """Initialize the online alignment class.
 
         Args:
-            reference_features (np.ndarray): features for the reference audio. Shape (n_features, n_frames)
+            reference_features (np.ndarray): features for the reference audio.
+                Shape (n_features, n_frames)
         """
         # set up reference
         self.reference_features = reference_features
 
         # set up alignment costs
-        self.cost_metric = handle_cost(cost_metric)
+        self.cost_metric = get_cost_metric(cost_metric)
 
     def feed(self, query_frame: np.ndarray):
         """Feeds query frame features into the system"""

@@ -10,7 +10,9 @@ from .cost_metric import CostMetric
 
 # define v2v cost function
 def cosine_dist_vec2vec(fv_1: np.ndarray, fv_2: np.ndarray, normalized: bool = None):
-    """Calculates cosine distance between two feature frames fv_1 and fv_2. Assumes fv_1 and fv_2 are unnormalized.
+    """
+    Calculates cosine distance between two feature frames fv_1 and fv_2.
+        Assumes fv_1 and fv_2 are unnormalized.
 
     Args:
         fv_1 (np.ndarray): reference feature frame, shape (n_features, 1)
@@ -42,7 +44,8 @@ def cosine_dist_vec2vec(fv_1: np.ndarray, fv_2: np.ndarray, normalized: bool = N
 
 @njit
 def _cosine_dist_vec2vec_normalized(fv_1: np.ndarray, fv_2: np.ndarray):
-    """Calculates cosine distance between two normalized feature frames fv_1 and fv_2.
+    """
+    Calculates cosine distance between two normalized feature frames fv_1 and fv_2.
 
     Args:
         fv_1 (np.ndarray): reference feature frame, shape (n_features, 1)
@@ -53,7 +56,8 @@ def _cosine_dist_vec2vec_normalized(fv_1: np.ndarray, fv_2: np.ndarray):
 
 ### Helper Functions
 def _check_l2_normalized_vec(fv_1: np.ndarray) -> bool:
-    """Checks if a feature vector fv_1 is L2 normalized or not.
+    """
+    Checks if a feature vector fv_1 is L2 normalized or not.
 
     Args:
         fv_1 (np.ndarray): feature vector to be checked
@@ -73,7 +77,9 @@ class CosineDistance(CostMetric):
 
     ### Matrix-Matrix Cosine Distance
     def mat2mat(self, fm_1: np.ndarray, fm_2: np.ndarray, normalized: bool = None):
-        """Calculates cosine distance between two feature matrices fm_1 and fm_2. Assumes fm_1 and fm_2 are unnormalized.
+        """
+        Calculates cosine distance between two feature matrices fm_1 and fm_2.
+            Assumes fm_1 and fm_2 are unnormalized.
 
         Args:
             fm_1 (np.ndarray): reference feature matrix, shape (n_features, n_frames)
@@ -87,7 +93,9 @@ class CosineDistance(CostMetric):
 
     ### Vector-Matrix Cosine Distance
     def mat2vec(self, fm_1: np.ndarray, fv_2: np.ndarray, normalized: bool = None):
-        """Calculates cosine distance between a feature matrix fm_1 and a feature frame vector fv_2. Assumes fm_1 and fv_2 are unnormalized.
+        """
+        Calculates cosine distance between a feature matrix fm_1 and a feature frame vector fv_2.
+            Assumes fm_1 and fv_2 are unnormalized.
 
         Args:
             fm_1 (np.ndarray): reference feature matrix, shape (n_features, n_frames)
@@ -101,7 +109,9 @@ class CosineDistance(CostMetric):
 
     ### Vector-Vector Cosine Distance
     def vec2vec(self, fv_1: np.ndarray, fv_2: np.ndarray, normalized: bool = None):
-        """Calculates cosine distance between two feature frame vectors fv_1 and fv_2. Assumes fv_1 and fv_2 are unnormalized.
+        """
+        Calculates cosine distance between two feature frame vectors fv_1 and fv_2.
+            Assumes fv_1 and fv_2 are unnormalized.
 
         Args:
             fv_1 (np.ndarray): reference feature frame, shape (n_features, 1)

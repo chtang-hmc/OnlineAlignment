@@ -41,7 +41,7 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["alignment*", "core*", "utils*"]
+include = ["core*"]
 
 [tool.black]
 line-length = 100
