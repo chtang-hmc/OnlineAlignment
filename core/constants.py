@@ -1,0 +1,9 @@
+"""Constants for the core package."""
+
+import numpy as np
+
+# default DTW steps and weights
+DEFAULT_DTW_STEPS: np.ndarray = np.array([1, 1, 1, 2, 2, 1]).reshape((-1, 2))
+DEFAULT_DTW_WEIGHTS: np.ndarray = np.array([1, 1, 2])
+OLTW_STEPS: np.ndarray = np.array([1, 0, 0, 1, 1, 1]).reshape((-1, 2))
+OLTW_WEIGHTS: np.ndarray = np.array([1, 1, 1])

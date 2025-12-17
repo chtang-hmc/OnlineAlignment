@@ -132,9 +132,7 @@ class CosineDistance(CostMetric):
         if normalized is None:
             norms_1 = np.linalg.norm(fm_1, ord=2, axis=0, keepdims=True)
             norm_2 = np.linalg.norm(fv_2, ord=2)
-            normalized = np.allclose(norms_1, 1.0, atol=1e-6) and np.isclose(
-                norm_2, 1.0, atol=1e-6
-            )
+            normalized = np.allclose(norms_1, 1.0, atol=1e-6) and np.isclose(norm_2, 1.0, atol=1e-6)
 
         if not normalized:
             fm_1 = fm_1 / (np.linalg.norm(fm_1, ord=2, axis=0, keepdims=True) + 1e-10)

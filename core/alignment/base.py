@@ -38,6 +38,7 @@ class AlignmentBase(ABC):
 
         # set up reference
         self.reference_features = reference_features
+        self.reference_length = reference_features.shape[1]
 
         # set up alignment costs
         self.cost_metric = get_cost_metric(cost_metric)
@@ -69,7 +70,6 @@ class OnlineAlignment(AlignmentBase):
         Args:
             query_frame: Single frame of query features. Shape (n_features, 1)
         """
-        pass
 
     @abstractmethod
     def process_frame(self):
@@ -78,7 +78,6 @@ class OnlineAlignment(AlignmentBase):
         This method should update the internal alignment state based on the
         last frame fed via feed().
         """
-        pass
 
     @abstractmethod
     def align(self, query_features: np.ndarray):
@@ -94,4 +93,3 @@ class OnlineAlignment(AlignmentBase):
         Returns:
             Alignment path or result (implementation-specific).
         """
-        pass
