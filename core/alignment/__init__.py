@@ -2,7 +2,7 @@
 
 from .base import AlignmentBase, OnlineAlignment
 from .online import NOA, OLTW
-from .offline import OfflineAlignment, OfflineOLTW
+from .offline import OfflineAlignment, OfflineOLTW, run_offline_oltw
 
 __all__ = [
     "AlignmentBase",
@@ -11,4 +11,5 @@ __all__ = [
     "OLTW",
     "OfflineAlignment",
     "OfflineOLTW",
+    "run_offline_oltw",
 ]

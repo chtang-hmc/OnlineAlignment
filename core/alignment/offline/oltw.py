@@ -46,7 +46,7 @@ class OfflineOLTW(OfflineAlignment):
         super().__init__(reference_features, cost_metric)
 
         # initialize query and reference locations
-        self.t, self.j = 0, 0  # t is query (row), j is reference (column)
+        self.t, self.j = 0, 0  # t is reference (row), j is query (column)
 
         # steps and weights
         _validate_dtw_steps_weights(steps, weights)
@@ -64,7 +64,7 @@ class OfflineOLTW(OfflineAlignment):
     def get_inc(self, D_normalized: np.ndarray):
         """Check which direction to increment based on normalized costs."""
         # handle maximum run count
-        if self.cur_run_count > self.max_run_count:
+        if self.cur_run_count >= self.max_run_count:
             if self.prev == ROW:
                 return COLUMN
             else:
@@ -88,8 +88,8 @@ class OfflineOLTW(OfflineAlignment):
         """
 
         # access current row and columns
-        cur_col = D_normalized[self.t, :]
-        cur_row = D_normalized[:, self.j]
+        cur_row = D_normalized[self.t, :]  # row t = reference frame t
+        cur_col = D_normalized[:, self.j]  # column j = query frame j
 
         # initialize min
         min_cost = np.inf
@@ -97,21 +97,22 @@ class OfflineOLTW(OfflineAlignment):
         min_cost_idx = -1  # index where we are on the row or column
 
         # loop through to find minimum indices
-        for idx, cost in enumerate(cur_row):  # row first
+        for idx, cost in enumerate(cur_row):  # row first (reference row, query indices)
             if cost < min_cost:
                 min_cost = cost
                 min_cost_idx = idx
+                min_cost_location = ROW
 
-        for idx, cost in enumerate(cur_col):  # then column
+        for idx, cost in enumerate(cur_col):  # then column (query column, reference indices)
             if cost < min_cost:
                 min_cost = cost
                 min_cost_idx = idx
                 min_cost_location = COLUMN
 
         if min_cost_location == ROW:
-            return min_cost_idx, self.j
+            return self.t, min_cost_idx  # (reference_idx, query_idx)
         else:
-            return self.t, min_cost_idx
+            return min_cost_idx, self.j  # (reference_idx, query_idx)
 
     def align(self, query_features: np.ndarray):
         """Align query features to reference features.
@@ -151,14 +152,14 @@ class OfflineOLTW(OfflineAlignment):
 
         # main recursion loop
         # stop when we have reached the end of either query or reference
-        while self.t < query_length - 1 or self.j < ref_length - 1:
+        while self.t < ref_length - 1 and self.j < query_length - 1:
             inc = self.get_inc(D_normalized)  # get increment direction
 
             # increment indices while staying within bounds
-            if inc != COLUMN and self.t < query_length - 1:
-                self.t += 1
-            if inc != ROW and self.j < ref_length - 1:
-                self.j += 1
+            if inc != COLUMN and self.t < ref_length - 1:
+                self.t += 1  # increment reference (row)
+            if inc != ROW and self.j < query_length - 1:
+                self.j += 1  # increment query (column)
             if inc == self.prev:
                 self.cur_run_count += 1
             else:
@@ -166,7 +167,31 @@ class OfflineOLTW(OfflineAlignment):
             if inc != BOTH:
                 self.prev = inc
 
-            self.path[0].append(self.j)
-            self.path[1].append(self.t)
+            self.path[0].append(self.j)  # query (column)
+            self.path[1].append(self.t)  # reference (row)
 
+        self.path = np.array(self.path)
         return self.path
+
+
+def run_offline_oltw(
+    reference_features: np.ndarray,
+    query_features: np.ndarray,
+    steps: np.ndarray = OLTW_STEPS,
+    weights: np.ndarray = OLTW_WEIGHTS,
+    cost_metric: str | Callable | CostMetric = "cosine",
+    max_run_count: int = 3,
+):
+    """Offline OLTW algorithm.
+
+    Args:
+        reference_features: Reference features. Shape (n_features, n_frames)
+        query_features: Query features. Shape (n_features, n_frames)
+        steps: DTW steps. Shape (n_steps, 2)
+        weights: DTW weights. Shape (n_steps, 1)
+        cost_metric: Cost metric to use for computing distances.
+            Can be a string name, callable function, or CostMetric instance.
+        max_run_count: Maximum run count. Defaults to 3.
+    """
+    offline_oltw = OfflineOLTW(reference_features, steps, weights, cost_metric, max_run_count)
+    return offline_oltw.align(query_features)
