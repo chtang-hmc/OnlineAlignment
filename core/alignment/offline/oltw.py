@@ -8,8 +8,8 @@ import numpy as np
 from librosa.sequence import dtw
 
 # core imports
-from core.constants import OLTW_STEPS, OLTW_WEIGHTS
-from core.cost import CostMetric, normalize_by_path_length
+from ...constants import OLTW_STEPS, OLTW_WEIGHTS
+from ...cost import CostMetric, normalize_by_path_length
 
 # custom imports
 from .base import OfflineAlignment

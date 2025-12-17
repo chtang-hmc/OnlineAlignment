@@ -7,8 +7,8 @@ from typing import Callable
 import numpy as np
 
 # core imports
-from core.constants import DEFAULT_DTW_STEPS, DEFAULT_DTW_WEIGHTS
-from core.cost import CostMetric
+from ...constants import DEFAULT_DTW_STEPS, DEFAULT_DTW_WEIGHTS
+from ...cost import CostMetric
 
 # local imports
 from .base import OnlineAlignment

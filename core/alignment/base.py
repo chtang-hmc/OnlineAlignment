@@ -8,7 +8,7 @@ from typing import Callable
 import numpy as np
 
 # custom imports
-from core.cost import CostMetric, get_cost_metric
+from ..cost import CostMetric, get_cost_metric
 
 
 class AlignmentBase(ABC):
