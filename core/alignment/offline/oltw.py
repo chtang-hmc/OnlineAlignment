@@ -196,6 +196,7 @@ def run_offline_oltw(
     weights: np.ndarray = OLTW_WEIGHTS,
     cost_metric: str | Callable | CostMetric = "cosine",
     max_run_count: int = 3,
+    c: int = None,
 ):
     """Offline OLTW algorithm.
 
@@ -207,6 +208,7 @@ def run_offline_oltw(
         cost_metric: Cost metric to use for computing distances.
             Can be a string name, callable function, or CostMetric instance.
         max_run_count: Maximum run count. Defaults to 3.
+        c: band size for comparing costs.
     """
-    offline_oltw = OfflineOLTW(reference_features, steps, weights, cost_metric, max_run_count)
+    offline_oltw = OfflineOLTW(reference_features, steps, weights, cost_metric, max_run_count, c)
     return offline_oltw.align(query_features)
